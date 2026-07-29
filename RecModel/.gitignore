@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.venv/
+logs/
+results/TKY/T10/t10e_2_*
+checkpoints/TKY/*_final.pth

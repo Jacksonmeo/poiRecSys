@@ -1,0 +1,25 @@
+{
+  "n_users": 2281,
+  "n_venues": 7839,
+  "plan_A_full_matrix": {
+    "description": "每个用户存储完整 (V×V) 转移矩阵",
+    "memory_estimate_gb": 522.16,
+    "feasible": false
+  },
+  "plan_B_runtime_subtraction": {
+    "description": "存储全局稀疏转移表 + 各用户转移贡献，查询时相减",
+    "global_sparse_memory_mb": 5.98,
+    "per_user_avg_unique_pairs": 71.8,
+    "per_user_max_unique_pairs": 578,
+    "per_user_memory_mb": 1.87,
+    "total_memory_mb": 7.86,
+    "feasible": true,
+    "recommendation": "T10b 阶段推荐使用方案 B，总内存 < 15 MB"
+  },
+  "plan_C_lazy_computation": {
+    "description": "查询时扫描 train_traj 跳过当前用户，零额外存储",
+    "memory_mb": 0,
+    "query_latency": "高（每次需全量扫描），不推荐",
+    "feasible": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "models": [
+    { "model": "FPMC", "hr5": 37.27, "ndcg5": 25.49, "mrr10": 23.14 },
+    { "model": "SASRec", "hr5": 42.69, "ndcg5": 30.65, "mrr10": 28.01 },
+    { "model": "TiSASRec", "hr5": 43.35, "ndcg5": 32.05, "mrr10": 29.6 },
+    { "model": "Ours", "hr5": 50.86, "ndcg5": 37.07, "mrr10": 33.9 }
+  ],
+  "ablation": [
+    { "model": "Ours", "hr5": 50.86, "ndcg5": 37.07, "mrr10": 33.9 },
+    { "model": "w/o Temporal", "hr5": 47.12, "ndcg5": 33.75, "mrr10": 30.22 },
+    { "model": "w/o Spatial", "hr5": 45.98, "ndcg5": 32.84, "mrr10": 29.44 }
+  ],
+  "seen_unseen": [
+    { "group": "Seen POIs", "hr5": 56.42, "ndcg5": 42.18 },
+    { "group": "Unseen POIs", "hr5": 43.75, "ndcg5": 29.64 }
+  ]
+}
