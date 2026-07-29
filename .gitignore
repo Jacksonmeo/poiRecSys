@@ -11,7 +11,14 @@ frontend/dist/
 .env
 .env.*
 .vscode/
+.agents/
 
 backend/exports/
 
-RecModels/
+RecModel/
+
+Utils/
+
+node_modules/
+
+docs/
