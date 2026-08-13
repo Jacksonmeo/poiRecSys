@@ -114,8 +114,8 @@ watch(() => props.selectedArea, (areaId) => mapRef.value?.selectCandidateArea(ar
 .map-renderer__legend { position: absolute; z-index: 3; right: 14px; bottom: 14px; }
 .map-renderer__empty,.map-renderer__working { position: absolute; z-index: 2; top: 50%; left: 50%; display: grid; place-items: center; min-width: 240px; padding: 18px 22px; border: 1px solid rgba(210,223,236,.9); border-radius: 16px; background: rgba(255,255,255,.88); box-shadow: 0 12px 30px rgba(51,70,108,.1); backdrop-filter: blur(12px); transform: translate(-50%,-50%); }
 .map-renderer__empty > span { display: grid; width: 38px; height: 38px; place-items: center; margin-bottom: 8px; border-radius: 12px; color: #4d6cec; background: #edf2ff; font-size: 20px; }
-.map-renderer__empty strong,.map-renderer__working strong { color: #38465d; font-size: 10px; }
-.map-renderer__empty .meta,.map-renderer__working .meta { margin-top: 4px; color: #929eaf; font-size: 8px; }
+.map-renderer__empty strong,.map-renderer__working strong { color: #38465d; font-size: 13px; }
+.map-renderer__empty .meta,.map-renderer__working .meta { margin-top: 4px; color: #929eaf; font-size: 11px; }
 .map-renderer__working > span { position: relative; display: block; width: 44px; height: 44px; margin-bottom: 9px; border: 1px solid #94c9f2; border-radius: 50%; animation: rotate 2.4s linear infinite; }
 .map-renderer__working > span::after { position: absolute; inset: 8px; content: ""; border: 1px dashed #7b69e9; border-radius: 50%; }
 .map-renderer__working > span .dot { position: absolute; top: -3px; left: 19px; width: 6px; height: 6px; border-radius: 50%; background: #31c7ee; box-shadow: 0 0 9px #31c7ee; }

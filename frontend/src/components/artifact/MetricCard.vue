@@ -20,9 +20,9 @@ const formattedValue = computed(() => new Intl.NumberFormat("zh-CN", {
 
 <style scoped>
 .metric-card { min-width: 0; padding: 10px 11px; border: 1px solid #e1e8f3; border-radius: 11px; background: linear-gradient(145deg,#fff,#f8faff); }
-.metric-card > span { color: #66758d; font-size: 12px; }
+.metric-card > span { color: #66758d; font-size: 13px; }
 .metric-card div { display: flex; align-items: baseline; gap: 4px; margin-top: 3px; color: #1b2a44; }
 .metric-card strong { font-family: var(--font-mono); font-size: 17px; }
-.metric-card .unit { color: #8491a5; font-size: 11px; }
-.metric-card p { overflow: hidden; margin: 3px 0 0; color: #96a1b1; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.metric-card .unit { color: #8491a5; font-size: 12px; }
+.metric-card p { overflow: hidden; margin: 3px 0 0; color: #96a1b1; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 </style>

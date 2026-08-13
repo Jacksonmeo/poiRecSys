@@ -71,7 +71,7 @@ const emit = defineEmits<{ clear: [] }>()
 .panel-header__meta .meta .dot { display: inline-block; width: 6px; height: 6px; margin: 0 5px 1px 1px; border-radius: 50%; background: #33c58b; box-shadow: 0 0 0 3px rgba(51, 197, 139, .1); }
 .panel-header__meta .meta.is-working .dot { background: #27b6ed; box-shadow: 0 0 0 3px rgba(39, 182, 237, .1); animation: pulse 1.3s ease-in-out infinite; }
 
-.panel-header__clear { height: 36px; padding-inline: 11px; border-color: #dae4ef; border-radius: 9px; color: #6a778d; background: #fff; font-size: 12px; }
+.panel-header__clear { height: 36px; padding-inline: 11px; border-color: #dae4ef; border-radius: 9px; color: #6a778d; background: #fff; font-size: 13px; }
 
 @keyframes pulse { 50% { opacity: .35; transform: scale(.75); } }
 </style>

@@ -89,8 +89,8 @@ onBeforeUnmount(() => {
 .conversation-item__answer > span { color: #5870b3; font-size: var(--agent-font-meta, 10px); font-weight: 750; }
 .conversation-item__answer p { margin: 5px 0 0; color: #3f4f68; font-size: var(--agent-font-body, 14px); line-height: 1.7; white-space: pre-wrap; }
 .conversation-item__artifact { display: grid; gap: 3px; padding: 10px 11px; border: 1px solid #cfdafa; border-radius: 12px; background: linear-gradient(135deg,#f7f9ff,#eff4ff); }
-.conversation-item__artifact span { display: flex; align-items: center; gap: 6px; color: #6078bc; font-size: 11px; letter-spacing: .06em; }
+.conversation-item__artifact span { display: flex; align-items: center; gap: 6px; color: #6078bc; font-size: 12px; letter-spacing: .06em; }
 .conversation-item__artifact span .dot { width: 6px; height: 6px; border-radius: 2px; background: #4967f2; }
-.conversation-item__artifact strong { color: #2d3d61; font-size: 13px; }
-.conversation-item__artifact .meta { color: #78869c; font-size: 11px; }
+.conversation-item__artifact strong { color: #2d3d61; font-size: 14px; }
+.conversation-item__artifact .meta { color: #78869c; font-size: 12px; }
 </style>

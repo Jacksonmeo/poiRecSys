@@ -41,7 +41,7 @@ defineEmits<{
 </template>
 
 <style scoped>
-.agent-workspace { --agent-font-meta: 12px; --agent-font-secondary: 13px; --agent-font-body: 14px; display: flex; height: 100%; min-height: 0; flex-direction: column; background: rgba(255,255,255,.97); }
+.agent-workspace { --agent-font-meta: 13px; --agent-font-secondary: 14px; --agent-font-body: 15px; display: flex; height: 100%; min-height: 0; flex-direction: column; background: rgba(255,255,255,.97); }
 .agent-workspace__body { display: flex; flex: 1; min-height: 0; flex-direction: column; }
 .agent-workspace__start { display: flex; flex: 1; min-height: 0; flex-direction: column; gap: 16px; padding: 16px 14px 12px; overflow-y: auto; }
 .agent-workspace__welcome { display: flex; align-items: flex-start; gap: 11px; padding: 2px; }

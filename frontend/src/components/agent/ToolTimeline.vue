@@ -69,18 +69,18 @@ const statusLabel: Record<ToolStatus, string> = {
 .tool-step__rail { position: relative; display: flex; justify-content: center; }
 .tool-step__rail::after { position: absolute; top: 22px; bottom: 0; width: 1px; content: ""; background: #d9e3ef; }
 .tool-step:last-child .tool-step__rail::after { display: none; }
-.tool-step__rail .ico { position: relative; z-index: 1; display: grid; width: 18px; height: 18px; place-items: center; border: 1px solid #cbd6e3; border-radius: 50%; color: transparent; background: #fff; font-size: 10px; font-style: normal; }
+.tool-step__rail .ico { position: relative; z-index: 1; display: grid; width: 18px; height: 18px; place-items: center; border: 1px solid #cbd6e3; border-radius: 50%; color: transparent; background: #fff; font-size: 12px; font-style: normal; }
 .tool-step.is-success .tool-step__rail .ico { border-color: #39bb88; color: #fff; background: #39bb88; }
 .tool-step.is-running .tool-step__rail .ico { border-color: #3a8cf3; color: #3a8cf3; box-shadow: 0 0 0 4px rgba(58,140,243,.09); }
 .tool-step.is-error .tool-step__rail .ico { border-color: #e85f5a; color: #fff; background: #e85f5a; }
 .tool-step__content { min-width: 0; padding-bottom: 9px; }
 .tool-step__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .tool-step__head strong,.tool-step__head .meta { display: block; }
-.tool-step__head strong { color: #35435b; font-size: 13px; }
-.tool-step__head .meta { margin-top: 2px; color: #8491a5; font-size: 11px; }
-.tool-step__head .state { flex: none; color: #8794a7; font-size: 11px; font-style: normal; }
+.tool-step__head strong { color: #35435b; font-size: 14px; }
+.tool-step__head .meta { margin-top: 2px; color: #8491a5; font-size: 12px; }
+.tool-step__head .state { flex: none; color: #8794a7; font-size: 12px; font-style: normal; }
 .tool-step.is-success .state { color: #259b70; }.tool-step.is-running .state { color: #2e79df; }.tool-step.is-error .state { color: #d64b47; }
 .tool-step__chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
-.tool-step__chips span { padding: 3px 7px; border: 1px solid #d9e4f3; border-radius: 999px; color: #5570a8; background: #f3f7ff; font-family: var(--font-mono); font-size: 11px; }
-.tool-step__content p { margin: 5px 0 0; color: #68778e; font-size: 11px; }
+.tool-step__chips span { padding: 3px 7px; border: 1px solid #d9e4f3; border-radius: 999px; color: #5570a8; background: #f3f7ff; font-family: var(--font-mono); font-size: 12px; }
+.tool-step__content p { margin: 5px 0 0; color: #68778e; font-size: 12px; }
 </style>

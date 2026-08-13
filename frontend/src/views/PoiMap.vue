@@ -87,7 +87,7 @@ h2 {
 .page-toolbar p {
   margin: var(--space-1) 0 0;
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .map-card :deep(.el-card__body) {

@@ -75,14 +75,14 @@ const analyze = async (bbox: Bbox, gridSize: number) => {
 .page-toolbar p {
   margin: var(--space-1) 0 0;
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .page-toolbar__stats {
   display: flex;
   gap: var(--space-4);
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .page-toolbar__stats strong {

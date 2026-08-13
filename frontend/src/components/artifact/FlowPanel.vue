@@ -38,13 +38,13 @@ const orderedFlows = computed(() => [...props.flows].sort((a, b) => b.flow_count
 .flow-panel { min-width: 0; }
 header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
 h4 { margin: 0; color: #26344c; font-size: 14px; }
-header span,p { color: #8b97a9; font-size: 11px; }
+header span,p { color: #8b97a9; font-size: 12px; }
 .flow-panel__list { display: grid; gap: 5px; max-height: 122px; overflow: auto; }
 button { display: grid; min-width: 0; grid-template-columns: minmax(0,1fr) 14px minmax(0,1fr) auto; align-items: center; gap: 4px; width: 100%; padding: 7px 9px; border: 1px solid #e5ebf4; border-radius: 9px; color: #4a5870; background: #fbfcfe; text-align: left; cursor: pointer; }
 button:hover,button.is-related { border-color: #cbd7ff; background: #f2f5ff; }
-.area-name { min-width: 0; overflow: hidden; font-size: 12px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.area-name { min-width: 0; overflow: hidden; font-size: 13px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
 .arrow { color: #8090aa; font-style: normal; text-align: center; }
-strong { justify-self: end; color: #4967f2; font-family: var(--font-mono); font-size: 11px; }
-.meta { grid-column: 1 / -1; color: #929eb0; font-size: 11px; }
+strong { justify-self: end; color: #4967f2; font-family: var(--font-mono); font-size: 12px; }
+.meta { grid-column: 1 / -1; color: #929eb0; font-size: 12px; }
 p { margin: 0; padding: 12px; border: 1px dashed #dbe3ef; border-radius: 9px; text-align: center; }
 </style>

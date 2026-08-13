@@ -57,7 +57,7 @@ const analyze = () => emit("analyze", selectedArea.value.bbox, gridSize.value)
 .filter-panel__label {
   flex-shrink: 0;
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .filter-panel__slider {

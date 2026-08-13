@@ -16,7 +16,7 @@ defineProps<{ metadata: AnalysisMetadata; areaCount: number; metricCount: number
 <style scoped>
 .metadata-card { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
 .metadata-card div { min-width: 0; padding: 9px 11px; border: 1px solid #e2e9f3; border-radius: 10px; background: #f9fbfe; }
-.metadata-card .meta { display: block; margin-bottom: 3px; color: #8290a6; font-size: 11px; letter-spacing: .08em; }
-strong { display: block; overflow: hidden; color: #26344c; font-size: 13px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.metadata-card .meta { display: block; margin-bottom: 3px; color: #8290a6; font-size: 12px; letter-spacing: .08em; }
+strong { display: block; overflow: hidden; color: #26344c; font-size: 14px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
 @media (max-width: 760px) { .metadata-card { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 </style>

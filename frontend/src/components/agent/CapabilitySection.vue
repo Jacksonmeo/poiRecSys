@@ -27,7 +27,7 @@ const capabilities = [
 
 <style scoped>
 .capabilities__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; color: #33425d; font-size: 14px; font-weight: 750; }
-.capabilities__head .meta { color: #8492a7; font-size: 12px; font-weight: 500; }
+.capabilities__head .meta { color: #8492a7; font-size: 13px; font-weight: 500; }
 .capabilities__grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
 .capabilities button { display: grid; min-height: 66px; grid-template-columns: 32px minmax(0,1fr) 10px; align-items: center; gap: 8px; padding: 9px; border: 1px solid #dde7f2; border-radius: 12px; color: #30405d; background: linear-gradient(145deg,#fff,#f7faff); text-align: left; cursor: pointer; transition: .18s ease; }
 .capabilities button:first-child { grid-column: 1 / -1; border-color: #d5ddfa; background: linear-gradient(105deg,#fffaf2,#f5f7ff); }
@@ -35,8 +35,8 @@ const capabilities = [
 .capabilities button:disabled { cursor: not-allowed; opacity: .5; }
 .capabilities button > span:nth-child(2) { min-width: 0; }
 .capabilities strong,.capabilities button .meta { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.capabilities strong { font-size: 13px; }.capabilities button .meta { margin-top: 4px; color: #7c899d; font-size: 11px; }
-.capabilities button .arrow { color: #8d9bb0; font-size: 11px; font-style: normal; }
+.capabilities strong { font-size: 14px; }.capabilities button .meta { margin-top: 4px; color: #7c899d; font-size: 12px; }
+.capabilities button .arrow { color: #8d9bb0; font-size: 12px; font-style: normal; }
 .capabilities__icon { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 10px; font-size: 16px; }
 .is-blue { color: #4967f2; background: #edf1ff; }.is-cyan { color: #0b9ec7; background: #e8f9fd; }
 .is-violet { color: #8058e8; background: #f1edff; }.is-green { color: #15966c; background: #e9f8f2; }.is-amber { color: #c87914; background: #fff0d9; }

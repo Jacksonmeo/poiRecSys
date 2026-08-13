@@ -56,7 +56,7 @@ select {
 .section-subtitle {
   margin: var(--space-1) 0 0;
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* Mapbox popup 内容（渲染在 body 下，需全局样式）：点位信息卡 */
@@ -71,13 +71,13 @@ select {
 
 .map-popup__category {
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .map-popup .map-popup__coords {
   color: var(--color-text-tertiary);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .mapboxgl-ctrl-top-right {

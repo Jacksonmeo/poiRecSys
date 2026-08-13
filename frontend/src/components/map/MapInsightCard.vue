@@ -43,17 +43,17 @@ const hasScores = computed(() => ranked.value.some((point) => typeof point.score
 .insight-card__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; padding-bottom: 8px; border-bottom: 1px solid #edf1f6; }
 .insight-card__head > span { display: inline-flex; min-width: 0; align-items: center; gap: 7px; }
 .insight-card__head .dot { width: 7px; height: 7px; flex: none; border-radius: 2px; background: #4b6bf0; box-shadow: 0 0 0 4px rgba(75,107,240,.1); }
-.insight-card__head strong { overflow: hidden; color: #344159; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
-.insight-card__head .meta { flex: none; color: #9ba6b7; font-size: 10px; }
+.insight-card__head strong { overflow: hidden; color: #344159; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.insight-card__head .meta { flex: none; color: #9ba6b7; font-size: 11px; }
 .insight-card > button { display: flex; width: 100%; min-height: 38px; align-items: center; gap: 8px; padding: 5px 2px; border: 0; border-bottom: 1px solid #f0f3f7; color: #435169; background: transparent; text-align: left; cursor: pointer; }
 .insight-card > button:hover { background: #f7f9ff; }
-.insight-card > button > .badge { display: grid; width: 20px; height: 20px; flex: none; place-items: center; border-radius: 50%; color: #fff; background: #7558e5; font-size: 8px; font-style: normal; }
+.insight-card > button > .badge { display: grid; width: 20px; height: 20px; flex: none; place-items: center; border-radius: 50%; color: #fff; background: #7558e5; font-size: 11px; font-style: normal; }
 .insight-card > button > .badge.rank-2 { background: #e55d58; }
 .insight-card > button > .badge.rank-3 { background: #edae2d; }
 .insight-card > button > span { min-width: 0; flex: 1; }
 .insight-card button strong, .insight-card button .meta { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.insight-card button strong { font-size: 12px; }
-.insight-card button .meta { margin-top: 3px; color: #9aa5b6; font-size: 10px; }
-.insight-card button .score { flex: none; color: #596fe0; font-size: 11px; font-style: normal; }
-.insight-card > p { margin: 7px 0 0; color: #a0a9b8; font-size: 10px; }
+.insight-card button strong { font-size: 13px; }
+.insight-card button .meta { margin-top: 3px; color: #9aa5b6; font-size: 11px; }
+.insight-card button .score { flex: none; color: #596fe0; font-size: 12px; font-style: normal; }
+.insight-card > p { margin: 7px 0 0; color: #a0a9b8; font-size: 11px; }
 </style>

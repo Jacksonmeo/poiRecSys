@@ -80,7 +80,7 @@ const activeMetrics = computed(() => activeArea.value
 <style scoped>
 .artifact-view { display: grid; gap: 10px; padding: 12px; color: #26344c; background: #fff; }
 .artifact-view__header,.artifact-view__section-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.artifact-view__header span { color: #7186bd; font-size: 11px; letter-spacing: .08em; }
+.artifact-view__header span { color: #7186bd; font-size: 12px; letter-spacing: .08em; }
 .artifact-view__header h3 { margin: 2px 0 0; font-size: 18px; }
 .artifact-view__status { display: flex; align-items: center; gap: 5px; color: #468168; font-size: 12px; }
 .artifact-view__status .dot { width: 7px; height: 7px; border-radius: 50%; background: #38ae7b; box-shadow: 0 0 0 4px #e3f6ed; }
@@ -89,7 +89,7 @@ const activeMetrics = computed(() => activeArea.value
 .artifact-view__detail { display: grid; align-content: start; gap: 8px; }
 .artifact-view__section-title { margin-bottom: 6px; }
 .artifact-view__section-title h4 { margin: 0; font-size: 14px; }
-.artifact-view__section-title span { color: #8a97a9; font-size: 11px; }
+.artifact-view__section-title span { color: #8a97a9; font-size: 12px; }
 .artifact-view__metrics { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; }
 @media (max-width: 980px) { .artifact-view__grid { grid-template-columns: 1fr; } }
 </style>

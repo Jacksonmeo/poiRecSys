@@ -65,7 +65,7 @@
 .app-shell__brand-sub {
   margin-top: 3px;
   color: #8290a8;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .app-shell__menu {
@@ -105,7 +105,7 @@
 
 .app-shell__menu :deep(.el-sub-menu__title:hover) { color: var(--color-primary); background: #f3f6ff; }
 .app-shell__menu :deep(.el-sub-menu .el-menu) { background: transparent; }
-.app-shell__menu :deep(.el-sub-menu .el-menu-item) { height: 38px; margin: 2px 0 2px 18px; padding-left: 12px !important; font-size: 11px; }
+.app-shell__menu :deep(.el-sub-menu .el-menu-item) { height: 38px; margin: 2px 0 2px 18px; padding-left: 12px !important; font-size: 12px; }
 .app-shell__menu :deep(.el-sub-menu .el-menu-item .el-icon) { margin-right: 9px; font-size: 15px; }
 
 .app-shell__menu :deep(.el-menu-item .el-icon) {
@@ -157,7 +157,7 @@
   letter-spacing: -0.35px;
 }
 
-.app-shell__heading p { margin: 4px 0 0; color: #94a0b4; font-size: 11px; }
+.app-shell__heading p { margin: 4px 0 0; color: #94a0b4; font-size: 12px; }
 .app-shell__actions { display: flex; align-items: center; gap: 10px; }
 
 .online-badge {
@@ -171,7 +171,7 @@
   color: #344054;
   background: #fff;
   box-shadow: 0 2px 6px rgba(55, 73, 117, 0.03);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 550;
 }
 

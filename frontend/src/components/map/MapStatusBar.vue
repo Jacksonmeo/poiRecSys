@@ -50,12 +50,12 @@ const count = computed(() => props.artifact?.candidate_areas.length
 .map-status.is-working .map-status__signal .dot { animation: pulse 1.2s ease-in-out infinite; }
 .map-status__head > span:nth-child(2) { min-width: 0; flex: 1; }
 .map-status__head .meta,.map-status__head strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.map-status__head .meta { color: #7285b4; font-size: 10px; letter-spacing: .08em; }
-.map-status__head strong { margin-top: 3px; color: #2c3a53; font-size: 13px; }
-.map-status__head .state { padding: 3px 7px; border-radius: 999px; color: #29946e; background: #e9f7f2; font-size: 10px; font-style: normal; }
+.map-status__head .meta { color: #7285b4; font-size: 11px; letter-spacing: .08em; }
+.map-status__head strong { margin-top: 3px; color: #2c3a53; font-size: 14px; }
+.map-status__head .state { padding: 3px 7px; border-radius: 999px; color: #29946e; background: #e9f7f2; font-size: 12px; font-style: normal; }
 .map-status.is-working .map-status__head .state { color: #3374d4; background: #ebf3ff; }
 .map-status__meta { display: grid; gap: 5px; margin: 8px 0 0; padding: 0; }
-.map-status__meta div { display: grid; grid-template-columns: 48px minmax(0,1fr); gap: 7px; font-size: 11px; }
+.map-status__meta div { display: grid; grid-template-columns: 48px minmax(0,1fr); gap: 7px; font-size: 12px; }
 .map-status__meta dt { color: #98a3b4; }
 .map-status__meta dd { margin: 0; overflow: hidden; color: #5b687d; text-overflow: ellipsis; white-space: nowrap; }
 @keyframes pulse { 50% { opacity: .35; transform: scale(.72); } }

@@ -46,9 +46,9 @@ const findMetric = (areaId: string, metricId: string) =>
 
 <style scoped>
 .comparison-table { overflow: auto; border: 1px solid #e0e8f3; border-radius: 11px; }
-table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 10px; }
+table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 12px; }
 th,td { padding: 8px 10px; border-bottom: 1px solid #edf1f6; text-align: right; white-space: nowrap; }
-thead th { position: sticky; top: 0; color: #75839a; background: #f6f8fc; font-size: 9px; font-weight: 650; }
+thead th { position: sticky; top: 0; color: #75839a; background: #f6f8fc; font-size: 11px; font-weight: 650; }
 th:first-child { text-align: left; }
 tbody tr { cursor: pointer; transition: background .16s ease; }
 tbody tr:hover { background: #f7f9ff; }
