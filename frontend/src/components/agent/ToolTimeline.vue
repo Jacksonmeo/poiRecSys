@@ -45,15 +45,15 @@ const statusLabel: Record<ToolStatus, string> = {
 <template>
   <div class="tool-timeline" aria-label="Agent 任务执行过程">
     <div v-for="step in steps" :key="step.id" class="tool-step" :class="`is-${step.status}`">
-      <span class="tool-step__rail"><i>
+      <span class="tool-step__rail"><span class="ico">
         <el-icon v-if="step.status === 'running'" class="is-loading"><Loading /></el-icon>
         <template v-else-if="step.status === 'success'">✓</template>
         <template v-else-if="step.status === 'error'">!</template>
-      </i></span>
+      </span></span>
       <div class="tool-step__content">
         <div class="tool-step__head">
-          <span><strong>{{ step.label }}</strong><small>{{ step.hint }}</small></span>
-          <em>{{ statusLabel[step.status] }}</em>
+          <span><strong>{{ step.label }}</strong><span class="meta">{{ step.hint }}</span></span>
+          <span class="state">{{ statusLabel[step.status] }}</span>
         </div>
         <div v-if="step.chips.length" class="tool-step__chips"><span v-for="chip in step.chips" :key="chip">{{ chip }}</span></div>
         <p v-if="step.result">{{ step.result }}</p>
@@ -69,17 +69,17 @@ const statusLabel: Record<ToolStatus, string> = {
 .tool-step__rail { position: relative; display: flex; justify-content: center; }
 .tool-step__rail::after { position: absolute; top: 22px; bottom: 0; width: 1px; content: ""; background: #d9e3ef; }
 .tool-step:last-child .tool-step__rail::after { display: none; }
-.tool-step__rail i { position: relative; z-index: 1; display: grid; width: 18px; height: 18px; place-items: center; border: 1px solid #cbd6e3; border-radius: 50%; color: transparent; background: #fff; font-size: 10px; font-style: normal; }
-.tool-step.is-success .tool-step__rail i { border-color: #39bb88; color: #fff; background: #39bb88; }
-.tool-step.is-running .tool-step__rail i { border-color: #3a8cf3; color: #3a8cf3; box-shadow: 0 0 0 4px rgba(58,140,243,.09); }
-.tool-step.is-error .tool-step__rail i { border-color: #e85f5a; color: #fff; background: #e85f5a; }
+.tool-step__rail .ico { position: relative; z-index: 1; display: grid; width: 18px; height: 18px; place-items: center; border: 1px solid #cbd6e3; border-radius: 50%; color: transparent; background: #fff; font-size: 10px; font-style: normal; }
+.tool-step.is-success .tool-step__rail .ico { border-color: #39bb88; color: #fff; background: #39bb88; }
+.tool-step.is-running .tool-step__rail .ico { border-color: #3a8cf3; color: #3a8cf3; box-shadow: 0 0 0 4px rgba(58,140,243,.09); }
+.tool-step.is-error .tool-step__rail .ico { border-color: #e85f5a; color: #fff; background: #e85f5a; }
 .tool-step__content { min-width: 0; padding-bottom: 9px; }
 .tool-step__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-.tool-step__head strong,.tool-step__head small { display: block; }
+.tool-step__head strong,.tool-step__head .meta { display: block; }
 .tool-step__head strong { color: #35435b; font-size: 13px; }
-.tool-step__head small { margin-top: 2px; color: #8491a5; font-size: 11px; }
-.tool-step__head em { flex: none; color: #8794a7; font-size: 11px; font-style: normal; }
-.tool-step.is-success em { color: #259b70; }.tool-step.is-running em { color: #2e79df; }.tool-step.is-error em { color: #d64b47; }
+.tool-step__head .meta { margin-top: 2px; color: #8491a5; font-size: 11px; }
+.tool-step__head .state { flex: none; color: #8794a7; font-size: 11px; font-style: normal; }
+.tool-step.is-success .state { color: #259b70; }.tool-step.is-running .state { color: #2e79df; }.tool-step.is-error .state { color: #d64b47; }
 .tool-step__chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
 .tool-step__chips span { padding: 3px 7px; border: 1px solid #d9e4f3; border-radius: 999px; color: #5570a8; background: #f3f7ff; font-family: var(--font-mono); font-size: 11px; }
 .tool-step__content p { margin: 5px 0 0; color: #68778e; font-size: 11px; }

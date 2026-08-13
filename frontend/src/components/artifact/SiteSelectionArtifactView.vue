@@ -35,7 +35,7 @@ const activeMetrics = computed(() => activeArea.value
         <span>结构化分析结果 · 选址分析</span>
         <h3>选址证据工作台</h3>
       </div>
-      <div class="artifact-view__status"><i />已生成</div>
+      <div class="artifact-view__status"><span class="dot" />已生成</div>
     </header>
 
     <MetadataCard
@@ -83,7 +83,7 @@ const activeMetrics = computed(() => activeArea.value
 .artifact-view__header span { color: #7186bd; font-size: 11px; letter-spacing: .08em; }
 .artifact-view__header h3 { margin: 2px 0 0; font-size: 18px; }
 .artifact-view__status { display: flex; align-items: center; gap: 5px; color: #468168; font-size: 12px; }
-.artifact-view__status i { width: 7px; height: 7px; border-radius: 50%; background: #38ae7b; box-shadow: 0 0 0 4px #e3f6ed; }
+.artifact-view__status .dot { width: 7px; height: 7px; border-radius: 50%; background: #38ae7b; box-shadow: 0 0 0 4px #e3f6ed; }
 .artifact-view__grid { display: grid; grid-template-columns: minmax(0,1.45fr) minmax(240px,.8fr); gap: 12px; min-height: 0; }
 .artifact-view__comparison,.artifact-view__detail { min-width: 0; }
 .artifact-view__detail { display: grid; align-content: start; gap: 8px; }

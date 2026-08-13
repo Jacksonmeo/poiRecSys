@@ -255,7 +255,7 @@ export const useMap = (
         .setHTML(
           `<div class="map-popup"><strong>${props.title || "POI"}</strong>` +
             `<span class="map-popup__category">${props.category || ""}${rank}</span>` +
-            `<small>${lng.toFixed(5)}, ${lat.toFixed(5)}</small></div>`,
+            `<span class="map-popup__coords">${lng.toFixed(5)}, ${lat.toFixed(5)}</span></div>`,
         )
         .addTo(map as MapboxMap)
     }

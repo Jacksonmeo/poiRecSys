@@ -27,7 +27,6 @@ const isActive = (type: AgentMapLayerType) => !props.layers.length || activeType
 <style scoped>
 .map-legend { width: 198px; padding: 10px 12px 11px; border: 1px solid rgba(211,222,235,.95); border-radius: 13px; background: rgba(255,255,255,.94); box-shadow: 0 12px 30px rgba(50,69,109,.12); backdrop-filter: blur(14px); }
 .map-legend__title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; padding-bottom: 7px; border-bottom: 1px solid #edf1f5; color: #39475f; font-size: 10px; font-weight: 750; }
-.map-legend__title small { color: #a0aabd; font-size: 9px; }
 .map-legend__item { display: flex; min-height: 27px; align-items: center; gap: 9px; color: #68778e; font-size: 11px; transition: opacity .2s ease; }
 .map-legend__item.is-muted { opacity: .34; }
 .map-legend__dot { width: 8px; height: 8px; margin-left: 4px; border: 1.5px solid #fff; border-radius: 50%; background: #2f65ec; box-shadow: 0 0 0 2px #dce7ff; }

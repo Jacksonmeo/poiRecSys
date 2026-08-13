@@ -85,14 +85,14 @@ watch(() => props.selectedArea, (areaId) => mapRef.value?.selectCandidateArea(ar
     <MapStatusBar class="map-renderer__status" :layers="layers" :artifact="artifact" :working="working" />
 
     <div v-if="working && !hasResults" class="map-renderer__working">
-      <span><i /></span>
+      <span><span class="dot" /></span>
       <strong>Agent 正在构建空间证据</strong>
-      <small>理解任务 · 调用工具 · 生成分析结果</small>
+      <span class="meta">理解任务 · 调用工具 · 生成分析结果</span>
     </div>
     <!-- <div v-else-if="!hasResults" class="map-renderer__empty">
       <span>⌖</span>
       <strong>空间画布已就绪</strong>
-      <small>候选区域与迁移关系将在这里形成可交互图层</small>
+      <span class="meta">候选区域与迁移关系将在这里形成可交互图层</span>
     </div> -->
 
     <MapInsightCard class="map-renderer__insight" :points="poiPoints" @select="focusPoint" />
@@ -115,10 +115,10 @@ watch(() => props.selectedArea, (areaId) => mapRef.value?.selectCandidateArea(ar
 .map-renderer__empty,.map-renderer__working { position: absolute; z-index: 2; top: 50%; left: 50%; display: grid; place-items: center; min-width: 240px; padding: 18px 22px; border: 1px solid rgba(210,223,236,.9); border-radius: 16px; background: rgba(255,255,255,.88); box-shadow: 0 12px 30px rgba(51,70,108,.1); backdrop-filter: blur(12px); transform: translate(-50%,-50%); }
 .map-renderer__empty > span { display: grid; width: 38px; height: 38px; place-items: center; margin-bottom: 8px; border-radius: 12px; color: #4d6cec; background: #edf2ff; font-size: 20px; }
 .map-renderer__empty strong,.map-renderer__working strong { color: #38465d; font-size: 10px; }
-.map-renderer__empty small,.map-renderer__working small { margin-top: 4px; color: #929eaf; font-size: 8px; }
+.map-renderer__empty .meta,.map-renderer__working .meta { margin-top: 4px; color: #929eaf; font-size: 8px; }
 .map-renderer__working > span { position: relative; display: block; width: 44px; height: 44px; margin-bottom: 9px; border: 1px solid #94c9f2; border-radius: 50%; animation: rotate 2.4s linear infinite; }
 .map-renderer__working > span::after { position: absolute; inset: 8px; content: ""; border: 1px dashed #7b69e9; border-radius: 50%; }
-.map-renderer__working > span i { position: absolute; top: -3px; left: 19px; width: 6px; height: 6px; border-radius: 50%; background: #31c7ee; box-shadow: 0 0 9px #31c7ee; }
+.map-renderer__working > span .dot { position: absolute; top: -3px; left: 19px; width: 6px; height: 6px; border-radius: 50%; background: #31c7ee; box-shadow: 0 0 9px #31c7ee; }
 @keyframes rotate { to { transform: rotate(360deg); } }
 @media (max-width: 1100px) { .map-renderer__recommendation { display: none; } }
 @media (max-width: 760px) { .map-renderer__insight { display: none; } .map-renderer__status { right: 14px; } }

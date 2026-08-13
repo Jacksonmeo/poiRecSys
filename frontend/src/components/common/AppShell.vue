@@ -19,10 +19,10 @@ const activeDescription = computed(() => String(route.meta.description ?? "Agent
   <el-container class="app-shell">
     <el-aside width="216px" class="app-shell__sidebar">
       <div class="app-shell__brand">
-        <span class="app-shell__logo" aria-hidden="true"><i></i><b></b></span>
+        <span class="app-shell__logo" aria-hidden="true"><span class="app-shell__logo-dot"></span></span>
         <div class="app-shell__brand-copy">
           <strong>GeoAgent</strong>
-          <small>Agentic GIS · 空间智能</small>
+          <span class="app-shell__brand-sub">Agentic GIS · 空间智能</span>
         </div>
       </div>
 
@@ -59,7 +59,7 @@ const activeDescription = computed(() => String(route.meta.description ?? "Agent
         </div>
         <div class="app-shell__actions">
           <WorkspaceStatusControls />
-          <span class="online-badge"><i></i>在线</span>
+          <span class="online-badge"><span class="online-badge__dot"></span>在线</span>
         </div>
       </el-header>
 

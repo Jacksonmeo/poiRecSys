@@ -8,12 +8,12 @@ const emit = defineEmits<{ clear: [] }>()
 <template>
   <div class="panel-header">
     <div class="panel-header__identity">
-      <span class="panel-header__avatar" aria-hidden="true"><i></i><b></b></span>
+      <span class="panel-header__avatar" aria-hidden="true"><span class="avatar-mouth"></span></span>
       <div class="panel-header__meta">
         <strong>空间决策 Agent</strong>
-        <small :class="{ 'is-working': working }">
-          当前会话：<i></i>{{ working ? "正在分析" : "已连接" }}
-        </small>
+        <span class="meta" :class="{ 'is-working': working }">
+          当前会话：<span class="dot"></span>{{ working ? "正在分析" : "已连接" }}
+        </span>
       </div>
     </div>
     <el-button class="panel-header__clear" plain size="small" :disabled="working" @click="emit('clear')">
@@ -62,14 +62,14 @@ const emit = defineEmits<{ clear: [] }>()
 }
 .panel-header__avatar::before { left: 10px; }
 .panel-header__avatar::after { right: 10px; }
-.panel-header__avatar i { position: absolute; bottom: 7px; width: 10px; height: 3px; border-radius: 50%; background: #3eb9e3; }
+.panel-header__avatar .avatar-mouth { position: absolute; bottom: 7px; width: 10px; height: 3px; border-radius: 50%; background: #3eb9e3; }
 
 .panel-header__meta { min-width: 0; }
-.panel-header__meta strong, .panel-header__meta small { display: block; white-space: nowrap; }
+.panel-header__meta strong, .panel-header__meta .meta { display: block; white-space: nowrap; }
 .panel-header__meta strong { color: #152039; font-size: 16px; font-weight: 720; }
-.panel-header__meta small { margin-top: 4px; color: #748198; font-size: var(--agent-font-secondary, 13px); }
-.panel-header__meta small i { display: inline-block; width: 6px; height: 6px; margin: 0 5px 1px 1px; border-radius: 50%; background: #33c58b; box-shadow: 0 0 0 3px rgba(51, 197, 139, .1); }
-.panel-header__meta small.is-working i { background: #27b6ed; box-shadow: 0 0 0 3px rgba(39, 182, 237, .1); animation: pulse 1.3s ease-in-out infinite; }
+.panel-header__meta .meta { margin-top: 4px; color: #748198; font-size: var(--agent-font-secondary, 13px); }
+.panel-header__meta .meta .dot { display: inline-block; width: 6px; height: 6px; margin: 0 5px 1px 1px; border-radius: 50%; background: #33c58b; box-shadow: 0 0 0 3px rgba(51, 197, 139, .1); }
+.panel-header__meta .meta.is-working .dot { background: #27b6ed; box-shadow: 0 0 0 3px rgba(39, 182, 237, .1); animation: pulse 1.3s ease-in-out infinite; }
 
 .panel-header__clear { height: 36px; padding-inline: 11px; border-color: #dae4ef; border-radius: 9px; color: #6a778d; background: #fff; font-size: 12px; }
 

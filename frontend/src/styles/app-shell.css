@@ -38,8 +38,7 @@
 
 .app-shell__logo::before,
 .app-shell__logo::after,
-.app-shell__logo i,
-.app-shell__logo b {
+.app-shell__logo .app-shell__logo-dot {
   position: absolute;
   content: "";
   border: 2px solid rgba(255, 255, 255, 0.92);
@@ -48,10 +47,10 @@
 
 .app-shell__logo::before { width: 20px; height: 10px; transform: rotate(28deg); }
 .app-shell__logo::after { width: 10px; height: 20px; transform: rotate(28deg); }
-.app-shell__logo i { width: 6px; height: 6px; border-width: 0; background: #fff; }
+.app-shell__logo .app-shell__logo-dot { width: 6px; height: 6px; border-width: 0; background: #fff; }
 
 .app-shell__brand-copy strong,
-.app-shell__brand-copy small {
+.app-shell__brand-sub {
   display: block;
   white-space: nowrap;
 }
@@ -63,7 +62,7 @@
   letter-spacing: -0.5px;
 }
 
-.app-shell__brand-copy small {
+.app-shell__brand-sub {
   margin-top: 3px;
   color: #8290a8;
   font-size: 11px;
@@ -177,7 +176,7 @@
 }
 
 .online-badge { border-color: #d9e9e3; background: #f5fbf9; }
-.online-badge i { width: 8px; height: 8px; border-radius: 50%; background: #2fc484; box-shadow: 0 0 0 5px rgba(47, 196, 132, 0.12); }
+.online-badge .online-badge__dot { width: 8px; height: 8px; border-radius: 50%; background: #2fc484; box-shadow: 0 0 0 5px rgba(47, 196, 132, 0.12); }
 
 .app-shell__main {
   height: auto;

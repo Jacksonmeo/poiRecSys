@@ -207,7 +207,7 @@ onBeforeUnmount(() => {
               <div class="point-row">
                 <strong>{{ point.sequence_no }}. {{ point.display_name || point.venue_id }}</strong>
                 <span>{{ point.venue_category || "未知类别" }}</span>
-                <small>{{ point.longitude.toFixed(6) }}, {{ point.latitude.toFixed(6) }}</small>
+                <span class="meta">{{ point.longitude.toFixed(6) }}, {{ point.latitude.toFixed(6) }}</span>
               </div>
             </el-timeline-item>
           </el-timeline>
@@ -318,7 +318,7 @@ h2 {
 }
 
 .point-row span,
-.point-row small {
+.point-row .meta {
   color: var(--color-text-secondary);
 }
 

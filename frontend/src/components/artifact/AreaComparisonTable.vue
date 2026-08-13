@@ -33,10 +33,10 @@ const findMetric = (areaId: string, metricId: string) =>
           @click="$emit('select', area.area_id)"
           @keydown.enter="$emit('select', area.area_id)"
         >
-          <th><i :style="{ background: areaColor(area.area_id) }" />{{ area.display_name }}</th>
+          <th><span class="swatch" :style="{ background: areaColor(area.area_id) }" />{{ area.display_name }}</th>
           <td v-for="id in metricIds" :key="id">
             {{ findMetric(area.area_id, id)?.value ?? "—" }}
-            <small v-if="findMetric(area.area_id, id)">{{ metricUnit(findMetric(area.area_id, id)!) }}</small>
+            <span v-if="findMetric(area.area_id, id)" class="unit">{{ metricUnit(findMetric(area.area_id, id)!) }}</span>
           </td>
         </tr>
       </tbody>
@@ -55,7 +55,7 @@ tbody tr:hover { background: #f7f9ff; }
 tbody tr.is-selected { background: #eef2ff; box-shadow: inset 3px 0 #4967f2; }
 tbody tr:last-child th,tbody tr:last-child td { border-bottom: 0; }
 tbody th { color: #2c3a52; font-weight: 650; }
-i { display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; }
+.swatch { display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; }
 td { color: #3d4b63; font-family: var(--font-mono); }
-td small { margin-left: 2px; color: #9aa5b5; font-family: inherit; }
+td .unit { margin-left: 2px; color: #9aa5b5; font-family: inherit; }
 </style>

@@ -63,19 +63,19 @@ const showTools = () => {
       <section class="status-panel" aria-label="当前数据集">
         <header class="status-panel__header">
           <div>
-            <small>当前数据环境</small>
+            <span class="meta">当前数据环境</span>
             <strong>当前数据集</strong>
           </div>
-          <span class="status-panel__live"><i></i>已连接</span>
+          <span class="status-panel__live"><span class="dot"></span>已连接</span>
         </header>
 
         <div class="dataset-card">
           <span class="dataset-card__mark"><el-icon><MapLocation /></el-icon></span>
           <div>
             <strong>东京空间数据集</strong>
-            <small>日本 · 东京都市圈</small>
+            <span class="meta">日本 · 东京都市圈</span>
           </div>
-          <em>当前</em>
+          <span class="state">当前</span>
         </div>
 
         <dl class="dataset-meta">
@@ -111,17 +111,17 @@ const showTools = () => {
         >
           <el-icon class="workspace-control__icon"><Tools /></el-icon>
           <span>5 个工具就绪</span>
-          <i class="workspace-control__signal" aria-hidden="true"></i>
+          <span class="workspace-control__signal" aria-hidden="true"></span>
         </button>
       </template>
 
       <section class="status-panel" aria-label="Agent 工具状态">
         <header class="status-panel__header">
           <div>
-            <small>Agent 工具注册表</small>
+            <span class="meta">Agent 工具注册表</span>
             <strong>5 个空间工具已就绪</strong>
           </div>
-          <span class="status-panel__live"><i></i>已就绪</span>
+          <span class="status-panel__live"><span class="dot"></span>已就绪</span>
         </header>
 
         <ul class="tool-list">
@@ -129,10 +129,10 @@ const showTools = () => {
             <span class="tool-list__icon"><el-icon><component :is="item.icon" /></el-icon></span>
             <div>
               <strong>{{ item.name }}</strong>
-              <small>{{ item.description }}</small>
+              <span class="meta">{{ item.description }}</span>
               <code>{{ item.code }}</code>
             </div>
-            <em>可调用</em>
+            <span class="state">可调用</span>
           </li>
         </ul>
 
@@ -156,18 +156,18 @@ const showTools = () => {
 
 .status-panel { color: #344054; }
 .status-panel__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 16px 13px; border-bottom: 1px solid #edf1f6; }
-.status-panel__header small, .status-panel__header strong { display: block; }
-.status-panel__header small { margin-bottom: 4px; color: #7689bd; font-family: var(--font-mono); font-size: 8px; letter-spacing: .08em; }
+.status-panel__header .meta, .status-panel__header strong { display: block; }
+.status-panel__header .meta { margin-bottom: 4px; color: #7689bd; font-family: var(--font-mono); font-size: 8px; letter-spacing: .08em; }
 .status-panel__header strong { color: #18243a; font-size: 14px; }
 .status-panel__live { display: inline-flex; height: 24px; align-items: center; gap: 6px; padding: 0 8px; border-radius: 999px; color: #23825f; background: #eef9f5; font-size: 9px; font-weight: 700; }
-.status-panel__live i { width: 6px; height: 6px; border-radius: 50%; background: #2fc484; box-shadow: 0 0 0 3px rgba(47,196,132,.12); }
+.status-panel__live .dot { width: 6px; height: 6px; border-radius: 50%; background: #2fc484; box-shadow: 0 0 0 3px rgba(47,196,132,.12); }
 
 .dataset-card { display: grid; grid-template-columns: 38px minmax(0,1fr) auto; align-items: center; gap: 10px; margin: 13px 14px 10px; padding: 11px; border: 1px solid #dce6f7; border-radius: 12px; background: linear-gradient(125deg,#f8faff,#f1f7ff); }
 .dataset-card__mark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 11px; color: #fff; background: linear-gradient(145deg,#5375f0,#4861d9 58%,#26badd); box-shadow: 0 7px 14px rgba(69,91,205,.2); font-size: 18px; }
-.dataset-card strong, .dataset-card small { display: block; }
+.dataset-card strong, .dataset-card .meta { display: block; }
 .dataset-card strong { color: #273550; font-size: 11px; }
-.dataset-card small { margin-top: 3px; color: #8190a6; font-size: 9px; }
-.dataset-card em { padding: 3px 7px; border-radius: 999px; color: #4965dd; background: #e8edff; font-size: 8px; font-style: normal; font-weight: 700; }
+.dataset-card .meta { margin-top: 3px; color: #8190a6; font-size: 9px; }
+.dataset-card .state { padding: 3px 7px; border-radius: 999px; color: #4965dd; background: #e8edff; font-size: 8px; font-style: normal; font-weight: 700; }
 .dataset-meta { margin: 0; padding: 0 16px 11px; }
 .dataset-meta > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 0; }
 .dataset-meta dt { color: #8b97a9; font-size: 9px; }
@@ -177,11 +177,11 @@ const showTools = () => {
 .tool-list li { display: grid; grid-template-columns: 34px minmax(0,1fr) auto; align-items: center; gap: 9px; padding: 9px 2px; border-bottom: 1px solid #eff2f6; }
 .tool-list li:last-child { border-bottom: 0; }
 .tool-list__icon { display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid #dce6f5; border-radius: 10px; color: #4f6ae2; background: #f3f7ff; font-size: 15px; }
-.tool-list strong, .tool-list small, .tool-list code { display: block; }
+.tool-list strong, .tool-list .meta, .tool-list code { display: block; }
 .tool-list strong { color: #2e3c54; font-size: 10px; }
-.tool-list small { margin-top: 2px; color: #8b97a9; font-size: 8px; }
+.tool-list .meta { margin-top: 2px; color: #8b97a9; font-size: 8px; }
 .tool-list code { margin-top: 3px; color: #7083b5; font-family: var(--font-mono); font-size: 7px; }
-.tool-list em { color: #2b956e; font-size: 8px; font-style: normal; font-weight: 700; }
+.tool-list .state { color: #2b956e; font-size: 8px; font-style: normal; font-weight: 700; }
 
 .status-panel__action { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px 12px; border-top: 1px solid #edf1f6; color: #4564df; background: #fbfcff; font-size: 10px; font-weight: 700; text-decoration: none; }
 .status-panel__action:hover { color: #2f51dd; background: #f5f8ff; }

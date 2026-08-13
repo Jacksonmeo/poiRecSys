@@ -26,7 +26,7 @@ defineEmits<{
         <div class="agent-workspace__welcome">
           <span><el-icon><Location /></el-icon></span>
           <div>
-            <small>空间决策工作台</small>
+            <span class="meta">空间决策工作台</span>
             <h2>从一个选址问题开始</h2>
             <p>GeoAgent 会调用空间分析工具，并将结构化证据同步到地图和结果工作台。</p>
           </div>
@@ -46,7 +46,7 @@ defineEmits<{
 .agent-workspace__start { display: flex; flex: 1; min-height: 0; flex-direction: column; gap: 16px; padding: 16px 14px 12px; overflow-y: auto; }
 .agent-workspace__welcome { display: flex; align-items: flex-start; gap: 11px; padding: 2px; }
 .agent-workspace__welcome > span { display: grid; width: 37px; height: 37px; flex: none; place-items: center; border: 1px solid #dae5ff; border-radius: 11px; color: #4967f2; background: linear-gradient(145deg,#edf2ff,#edf9ff); font-size: 18px; box-shadow: 0 7px 16px rgba(66,89,170,.08); }
-.agent-workspace__welcome small { color: #6f86bf; font-size: var(--agent-font-meta); font-weight: 700; letter-spacing: .07em; }
+.agent-workspace__welcome .meta { color: #6f86bf; font-size: var(--agent-font-meta); font-weight: 700; letter-spacing: .07em; }
 .agent-workspace__welcome h2 { margin: 3px 0 4px; color: #19263e; font-size: 21px; font-weight: 760; }
 .agent-workspace__welcome p { margin: 0; color: #748198; font-size: var(--agent-font-secondary); line-height: 1.55; }
 @media (max-height: 760px) { .agent-workspace__start { gap: 11px; padding-top: 11px; } }
