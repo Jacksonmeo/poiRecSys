@@ -25,8 +25,10 @@ const loadPois = async () => {
     await nextTick()
     mapRef.value?.addPoiLayer(pois.value)
     if (pois.value.length) {
-      mapRef.value?.flyToPoint(pois.value[0].lng, pois.value[0].lat)
+      mapRef.value?.flyToPoint(pois.value[0].longitude, pois.value[0].latitude)
     }
+  } catch {
+    // 错误提示已由 request 拦截器统一处理，此处只负责恢复加载状态
   } finally {
     loading.value = false
   }

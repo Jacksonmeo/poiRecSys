@@ -5,9 +5,9 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from app.core.response import ApiResponse
 from app.db.database import get_db
 from app.schemas.user_trajectory import (
     SessionSummaryResponse,
@@ -19,28 +19,19 @@ from app.services.session_service import get_session_by_id, get_session_points
 router = APIRouter()
 
 
-@router.get("/{session_id}/trajectory", response_model=SessionTrajectoryResponse)
+@router.get("/{session_id}/trajectory", response_model=ApiResponse[SessionTrajectoryResponse])
 def get_session_trajectory(
     session_id: str,
     db: Annotated[Session, Depends(get_db)],
-) -> SessionTrajectoryResponse:
-    """返回指定会话的完整轨迹，包含会话摘要和按顺序排列的轨迹点列表。
-
-    轨迹点从 checkins 表与 pois 表 JOIN 查询，包含 POI 名称、类别和坐标，
-    供前端 Cesium 地图渲染轨迹路径使用。
-    """
+) -> ApiResponse[SessionTrajectoryResponse]:
+    """返回指定会话的完整轨迹，包含会话摘要和按顺序排列的轨迹点列表。"""
     if not session_id.strip():
         raise HTTPException(status_code=422, detail="session_id cannot be empty.")
 
-    try:
-        session = get_session_by_id(db=db, session_id=session_id)
-        if session is None:
-            raise HTTPException(status_code=404, detail=f"Session '{session_id}' was not found.")
-        rows = get_session_points(db=db, session_id=session_id)
-    except HTTPException:
-        raise
-    except SQLAlchemyError as exc:
-        raise HTTPException(status_code=500, detail="Failed to query session trajectory from database.") from exc
+    session = get_session_by_id(db=db, session_id=session_id)
+    if session is None:
+        raise HTTPException(status_code=404, detail=f"Session '{session_id}' was not found.")
+    rows = get_session_points(db=db, session_id=session_id)
 
     # 将数据库行转换为轨迹点响应对象，sequence_no 为空的点用遍历索引兜底
     points = []
@@ -50,7 +41,9 @@ def get_session_trajectory(
             payload["sequence_no"] = index
         points.append(TrajectoryPointResponse.model_validate(payload))
 
-    return SessionTrajectoryResponse(
-        session=SessionSummaryResponse.model_validate(session),
-        points=points,
+    return ApiResponse(
+        data=SessionTrajectoryResponse(
+            session=SessionSummaryResponse.model_validate(session),
+            points=points,
+        )
     )

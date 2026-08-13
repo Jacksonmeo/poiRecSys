@@ -65,13 +65,11 @@ def get_recommendations(
 
 
 def _poi_payload(poi: Poi) -> dict:
-    """同时返回数据库原生字段和现有前端仍在使用的兼容别名。
+    """将 POI ORM 对象展开为响应字典，只包含数据库原生字段。
 
-    将 ORM 对象的字段展开为字典，同时包含新旧两组字段名，
-    确保前端无论使用哪套字段名都能正常渲染 POI 信息。
+    第一阶段治理后已移除旧 CSV 兼容别名（poi_id/name/category/lng/lat/address），
+    前端统一使用 venue_id/display_name/venue_category/longitude/latitude。
     """
-    name = poi.display_name or poi.venue_id
-    category = poi.venue_category or "Unknown"
     return {
         "id": poi.id,
         "venue_id": poi.venue_id,
@@ -80,13 +78,6 @@ def _poi_payload(poi: Poi) -> dict:
         "venue_category": poi.venue_category,
         "latitude": poi.latitude,
         "longitude": poi.longitude,
-        # 以下为旧前端兼容字段
-        "poi_id": poi.venue_id,
-        "name": name,
-        "category": category,
-        "lng": poi.longitude,
-        "lat": poi.latitude,
-        "address": "",
     }
 
 
@@ -139,7 +130,8 @@ def get_recommendation(db: Session, user_id: str, session_id: str, model_name: s
     if session_points and session_points[-1].venue_id == results[0].target_poi_id:
         session_points = session_points[:-1]
 
-    # 组装历史轨迹数组，供前端 Cesium 地图绘制已知访问路径
+    # 组装历史轨迹数组，供前端地图绘制已知访问路径
+    # 字段与 /api/sessions/{sid}/trajectory 的轨迹点保持同构（统一字段命名）
     history = []
     for index, row in enumerate(session_points, start=1):
         point = row._mapping
@@ -147,12 +139,13 @@ def get_recommendation(db: Session, user_id: str, session_id: str, model_name: s
             {
                 "user_id": user_id,
                 "session_id": session_id,
-                "sequence": point["sequence_no"] or index,
-                "poi_id": point["venue_id"],
-                "poi_name": point["display_name"] or point["venue_id"],
-                "lng": point["longitude"],
-                "lat": point["latitude"],
-                "visit_time": point["utc_timestamp"],
+                "sequence_no": point["sequence_no"] or index,
+                "venue_id": point["venue_id"],
+                "display_name": point["display_name"],
+                "venue_category": point["venue_category"],
+                "longitude": point["longitude"],
+                "latitude": point["latitude"],
+                "utc_timestamp": point["utc_timestamp"],
             }
         )
 

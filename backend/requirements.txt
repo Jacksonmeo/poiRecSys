@@ -12,3 +12,7 @@ psycopg[binary]>=3.1.0,<4.0.0
 geoalchemy2>=0.14.0,<1.0.0
 # pydantic-settings 管理环境变量与 .env 配置。
 pydantic-settings>=2.0.0,<3.0.0
+# openai SDK：OpenAI 兼容 LLM API 客户端（Stage 4 LLM Function Calling）。
+openai>=1.30.0,<3.0.0
+# langgraph：Agent 编排图（Stage 6：StateGraph 替换自研 AgentLoop）。
+langgraph>=0.4.0,<1.0.0
