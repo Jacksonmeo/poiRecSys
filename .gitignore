@@ -10,6 +10,7 @@ frontend/dist/
 # 本地环境变量和编辑器配置通常包含机器相关信息。
 .env
 .env.*
+!.env.example
 .vscode/
 .agents/
 
@@ -17,8 +18,7 @@ backend/exports/
 
 RecModel/
 
-Utils/
+Utils/*
+!Utils/seperate.py
 
 node_modules/
-
-docs/

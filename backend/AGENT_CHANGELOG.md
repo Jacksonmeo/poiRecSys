@@ -4,6 +4,48 @@
 
 ---
 
+## 2026-07-15：Stage 6 — Agentic GIS 重构（LangGraph 编排 + 产品收敛）
+
+### 修改概述
+
+产品收敛为「Agent + 地图」双核心：删除与 Agent/地图无关的模块（metrics /
+recommend API、metrics_service、exports、RecModel、Utils、dashboard 配套），
+Agent 推理循环从自研 AgentLoop 迁移到 LangGraph StateGraph。
+
+### 修改文件清单
+
+| 文件 | 操作 | 说明 |
+|------|------|------|
+| `app/agent/graph/state.py` | 新建 | AgentState（messages / executions / seen_calls / step / reply） |
+| `app/agent/graph/nodes.py` | 新建 | call_model / execute_tools 节点工厂 + 路由决策 |
+| `app/agent/graph/builder.py` | 新建 | StateGraph 构建与编译（含步数与去重保护） |
+| `app/agent/graph/runner.py` | 新建 | AgentRunner（兼容原 AgentLoop 的 run / iter_run 接口） |
+| `app/agent/loop.py` | 删除 | 自研循环被 LangGraph 图替换 |
+| `app/agent/service.py` | 修改 | 改用 AgentRunner，SSE 事件契约不变 |
+| `app/api/metrics.py` | 删除 | 模型指标接口（dashboard 配套） |
+| `app/api/recommend.py` | 删除 | 推荐结果接口（model-lab 配套） |
+| `app/services/metrics_service.py` | 删除 | 指标服务（dashboard 配套） |
+| `app/data/metrics.json` | 删除 | 指标 mock 数据 |
+| `requirements.txt` | 修改 | 新增 `langgraph>=0.4.0,<1.0.0` |
+| `tests/test_agent_loop.py` | 重写 | 适配 AgentRunner（含 iter_run 事件序断言） |
+| `tests/test_recommend_api.py` | 删除 | 随 recommend API 移除 |
+| `tests/conftest.py` | 拆解 | seed_data 拆为 4 个种子函数 |
+
+### 关键决策
+
+1. **LangGraph 图结构**：`START → call_model → (route) → execute_tools → call_model → … → END`，
+   步数上限与工具调用去重内置于节点逻辑
+2. **不引入 langchain 工具生态**：execute_tools 直接调用既有 ToolRegistry
+   （run(db, args)），保持最小改动
+3. **事件契约不变**：iter_run 通过 `stream_mode="values"` 的状态快照差值还原
+   tool_call → tool_result 事件，前端 SSE 协议零改动
+4. **降级链保留**：LLM 不可用 / 输出非法时规则路由兜底，Mock Provider 离线可用
+5. **多工具并行**：execute_tools 执行 LLM 返回的全部工具调用（原实现只取第一个）
+6. **函数规范**：全部保留函数 ≤100 行并补齐中文 docstring；超长函数（如
+   `build_config`、`run_audit`、`render_markdown`、`seed_data`）拆分为小函数
+
+---
+
 ## 2026-07-11：POI 模块数据库迁移（CSV → PostgreSQL）
 
 ### 修改概述

@@ -1,0 +1,171 @@
+{
+  "audit_version": "site_selection_data_audit_v1",
+  "generated_at": "2026-08-03T09:39:25.682881+00:00",
+  "database_status": "available",
+  "read_only_transaction": true,
+  "config_version": "tokyo_coffee_v1",
+  "config_sha256": "e4f303b2a4465ca6c8865920ad217e471a34fc3997a7789515275996317ab441",
+  "audit_script_sha256": "89a7a137df99218f0f369b6070d215fd0efc1f8ac0e2db7c1e7b3ecf69a9ba6e",
+  "dataset": "Foursquare Tokyo 2012-2013 historical check-in sample",
+  "database_context": {
+    "database_name": "postgres",
+    "schema_name": "public",
+    "server_version": "18.4",
+    "transaction_isolation": "read committed",
+    "transaction_snapshot": "2977:2977:"
+  },
+  "counts": {
+    "pois": 61858,
+    "checkins": 573703,
+    "sessions": 79312
+  },
+  "checkin_field_completeness": {
+    "session_id": {
+      "non_null_count": 532290,
+      "total_count": 573703,
+      "ratio": 0.927815
+    },
+    "sequence_no": {
+      "non_null_count": 532290,
+      "total_count": 573703,
+      "ratio": 0.927815
+    }
+  },
+  "checkin_assignment_field_distribution": {
+    "both_non_null": 532290,
+    "both_null": 41413,
+    "session_id_only": 0,
+    "sequence_no_only": 0
+  },
+  "session_checkin_count_mismatch_count": 0,
+  "checkins_without_poi_count": 0,
+  "candidate_areas": {
+    "shinjuku": {
+      "poi_count": 3160,
+      "coffee_shop_and_cafe_count": 195,
+      "historical_checkin_count": 40374
+    },
+    "shibuya": {
+      "poi_count": 2527,
+      "coffee_shop_and_cafe_count": 201,
+      "historical_checkin_count": 26009
+    },
+    "ginza": {
+      "poi_count": 2725,
+      "coffee_shop_and_cafe_count": 199,
+      "historical_checkin_count": 21483
+    },
+    "ikebukuro": {
+      "poi_count": 1642,
+      "coffee_shop_and_cafe_count": 111,
+      "historical_checkin_count": 22002
+    }
+  },
+  "indexes": {
+    "pois_geom_gist": {
+      "exists": true,
+      "matching_indexes": [
+        "idx_pois_geom"
+      ]
+    },
+    "critical_btree": [
+      {
+        "requirement_id": "pois_venue_id",
+        "table": "pois",
+        "columns": [
+          "venue_id"
+        ],
+        "exists": true,
+        "matching_indexes": [
+          "pois_venue_id_key"
+        ]
+      },
+      {
+        "requirement_id": "pois_venue_category",
+        "table": "pois",
+        "columns": [
+          "venue_category"
+        ],
+        "exists": false,
+        "matching_indexes": []
+      },
+      {
+        "requirement_id": "checkins_user_id",
+        "table": "checkins",
+        "columns": [
+          "user_id"
+        ],
+        "exists": true,
+        "matching_indexes": [
+          "idx_checkins_user_time"
+        ]
+      },
+      {
+        "requirement_id": "checkins_venue_id",
+        "table": "checkins",
+        "columns": [
+          "venue_id"
+        ],
+        "exists": true,
+        "matching_indexes": [
+          "idx_checkins_venue"
+        ]
+      },
+      {
+        "requirement_id": "checkins_utc_timestamp",
+        "table": "checkins",
+        "columns": [
+          "utc_timestamp"
+        ],
+        "exists": false,
+        "matching_indexes": []
+      },
+      {
+        "requirement_id": "checkins_session_id",
+        "table": "checkins",
+        "columns": [
+          "session_id"
+        ],
+        "exists": true,
+        "matching_indexes": [
+          "idx_checkins_session_sequence"
+        ]
+      },
+      {
+        "requirement_id": "checkins_session_sequence",
+        "table": "checkins",
+        "columns": [
+          "session_id",
+          "sequence_no"
+        ],
+        "exists": true,
+        "matching_indexes": [
+          "idx_checkins_session_sequence"
+        ]
+      },
+      {
+        "requirement_id": "sessions_session_id",
+        "table": "sessions",
+        "columns": [
+          "session_id"
+        ],
+        "exists": true,
+        "matching_indexes": [
+          "sessions_session_id_key"
+        ]
+      },
+      {
+        "requirement_id": "sessions_user_id",
+        "table": "sessions",
+        "columns": [
+          "user_id"
+        ],
+        "exists": true,
+        "matching_indexes": [
+          "idx_sessions_user_start_time"
+        ]
+      }
+    ],
+    "all_critical_btree_indexes_exist": false
+  }
+}

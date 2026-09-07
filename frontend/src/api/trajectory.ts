@@ -7,7 +7,6 @@ import type {
   SessionListResponse,
   SessionTrajectoryResponse,
   UserListResponse,
-  UserSummary,
 } from "@/types"
 
 /**
@@ -49,12 +48,3 @@ export const getUserSessions = (
  */
 export const getSessionTrajectory = (sessionId: string) =>
   request.get<never, SessionTrajectoryResponse>(`/sessions/${encodeURIComponent(sessionId)}/trajectory`)
-
-/**
- * 便捷方法：直接获取用户摘要列表（前 20 条）。
- * 封装了 getUsers 的分页逻辑，避免调用方重复传参。
- */
-export const fetchUsers = async (): Promise<UserSummary[]> => {
-  const result = await getUsers({ skip: 0, limit: 20 })
-  return result.items
-}

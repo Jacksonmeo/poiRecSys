@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from app.core.response import ApiResponse
 from app.db.database import get_db
 
 router = APIRouter(tags=["Health"])
@@ -14,14 +15,10 @@ router = APIRouter(tags=["Health"])
 @router.get("/api/health/database")
 def database_health(
     db: Annotated[Session, Depends(get_db)],
-) -> dict:
+) -> ApiResponse[dict]:
     """检查数据库连接是否正常。
 
     执行 SELECT 1 以验证 PostgreSQL 连接池可用。
-    用于 Kubernetes 就绪探针或运维监控，确认服务与数据库之间的连通性。
     """
     db.execute(text("SELECT 1"))
-    return {
-        "status": "ok",
-        "database": "postgresql",
-    }
+    return ApiResponse(data={"status": "ok", "database": "postgresql"})

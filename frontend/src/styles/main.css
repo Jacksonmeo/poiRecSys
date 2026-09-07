@@ -7,7 +7,7 @@
 html,
 body,
 #app {
-  min-width: 1024px;
+  min-width: 0;
   min-height: 100%;
   margin: 0;
   font-family: var(--font-family);
@@ -15,9 +15,20 @@ body,
 
 body {
   color: var(--color-text-primary);
-  background:
-    radial-gradient(circle at 12% 0%, rgba(36, 107, 254, 0.12), transparent 28%),
-    linear-gradient(135deg, #f8fbff 0%, var(--color-bg) 46%, #eef6f8 100%);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  color: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(73, 103, 242, 0.22);
+  outline-offset: 2px;
 }
 
 button,
@@ -45,5 +56,54 @@ select {
 .section-subtitle {
   margin: var(--space-1) 0 0;
   color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+/* Mapbox popup 内容（渲染在 body 下，需全局样式）：点位信息卡 */
+.map-popup {
+  display: grid;
+  gap: 4px;
+}
+
+.map-popup strong {
+  font-size: 15px;
+}
+
+.map-popup__category {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.map-popup .map-popup__coords {
+  color: var(--color-text-tertiary);
+  font-family: var(--font-mono);
   font-size: 13px;
+}
+
+.mapboxgl-ctrl-top-right {
+  top: 54px !important;
+  right: 14px !important;
+}
+
+.mapboxgl-ctrl-group {
+  overflow: hidden;
+  border: 1px solid rgba(198, 211, 227, 0.9);
+  border-radius: 12px !important;
+  box-shadow: 0 10px 26px rgba(49, 69, 112, 0.12) !important;
+}
+
+.mapboxgl-ctrl-group button {
+  width: 38px !important;
+  height: 38px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

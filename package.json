@@ -1,5 +1,13 @@
 {
-  "dependencies": {
-    "pnpm": "^11.11.0"
+  "name": "geoagent",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Agentic GIS 空间决策平台（GeoAgent）— 前端入口位于 frontend/，根目录仅提供统一的 pnpm 脚本入口。",
+  "scripts": {
+    "dev": "pnpm --dir frontend dev",
+    "build": "pnpm --dir frontend build",
+    "lint": "pnpm --dir frontend lint",
+    "test": "pnpm --dir frontend test",
+    "preview": "pnpm --dir frontend preview"
   }
 }

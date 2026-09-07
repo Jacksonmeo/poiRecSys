@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue"
-import { ElMessage } from "element-plus"
 import { getSessionTrajectory, getUserSessions, getUsers } from "@/api/trajectory"
 import MapContainer from "@/components/map/MapContainer.vue"
 import type { SessionSummary, SessionTrajectoryResponse, UserSummary } from "@/types"
@@ -25,11 +24,13 @@ const sortedPoints = computed(() =>
   [...(trajectory.value?.points || [])].sort((a, b) => a.sequence_no - b.sequence_no),
 )
 
+/** 将 ISO 时间转换为当前浏览器时区的可读文本。 */
 const formatTime = (value?: string) => {
   if (!value) return "-"
   return new Date(value).toLocaleString()
 }
 
+/** 为 session 选择器生成时间范围和签到数量标签。 */
 const sessionLabel = (session: SessionSummary) =>
   `${formatTime(session.start_time)} - ${formatTime(session.end_time)} · ${session.checkin_count} check-ins`
 
@@ -62,17 +63,18 @@ const searchUsers = (keyword = "") => {
       if (currentVersion !== userRequestVersion) return
       users.value = result.items
       if (!selectedUserId.value && users.value.length) selectedUserId.value = users.value[0].user_id
-    } catch {
+    } catch (err) {
       if (currentVersion !== userRequestVersion) return
       users.value = []
-      errorMessage.value = "用户列表加载失败，请确认后端服务已启动。"
-      ElMessage.error(errorMessage.value)
+      // 错误提示已由 request 拦截器统一处理，这里仅同步页面内联错误状态
+      errorMessage.value = err instanceof Error ? err.message : "加载失败"
     } finally {
       if (currentVersion === userRequestVersion) usersLoading.value = false
     }
   }, 300)
 }
 
+/** 加载指定用户的 session 列表，并自动选中第一条。 */
 const loadSessions = async (userId: string) => {
   const currentVersion = ++sessionRequestVersion
   sessionsLoading.value = true
@@ -91,15 +93,15 @@ const loadSessions = async (userId: string) => {
     if (currentVersion !== sessionRequestVersion) return
     sessions.value = result.items
     selectedSessionId.value = sessions.value[0]?.session_id || ""
-  } catch {
+  } catch (err) {
     if (currentVersion !== sessionRequestVersion) return
-    errorMessage.value = "Session 列表加载失败。"
-    ElMessage.error(errorMessage.value)
+    errorMessage.value = err instanceof Error ? err.message : "Session 列表加载失败。"
   } finally {
     if (currentVersion === sessionRequestVersion) sessionsLoading.value = false
   }
 }
 
+/** 加载指定 session 的轨迹，并同步到 Mapbox 轨迹图层。 */
 const loadTrajectory = async (sessionId: string) => {
   const currentVersion = ++trajectoryRequestVersion
   trajectoryLoading.value = true
@@ -117,10 +119,9 @@ const loadTrajectory = async (sessionId: string) => {
     trajectory.value = result
     await nextTick()
     mapRef.value?.addTrajectoryLayer(result.points, { sessionId: result.session.session_id })
-  } catch {
+  } catch (err) {
     if (currentVersion !== trajectoryRequestVersion) return
-    errorMessage.value = "轨迹详情加载失败。"
-    ElMessage.error(errorMessage.value)
+    errorMessage.value = err instanceof Error ? err.message : "轨迹详情加载失败。"
   } finally {
     if (currentVersion === trajectoryRequestVersion) trajectoryLoading.value = false
   }
@@ -206,7 +207,7 @@ onBeforeUnmount(() => {
               <div class="point-row">
                 <strong>{{ point.sequence_no }}. {{ point.display_name || point.venue_id }}</strong>
                 <span>{{ point.venue_category || "未知类别" }}</span>
-                <small>{{ point.longitude.toFixed(6) }}, {{ point.latitude.toFixed(6) }}</small>
+                <span class="meta">{{ point.longitude.toFixed(6) }}, {{ point.latitude.toFixed(6) }}</span>
               </div>
             </el-timeline-item>
           </el-timeline>
@@ -218,11 +219,12 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .trajectory-page {
-  display: grid;
+  display: flex;
   height: 100%;
   min-height: 0;
-  grid-template-rows: auto auto minmax(0, 1fr);
+  flex-direction: column;
   gap: var(--space-3);
+  overflow: hidden;
 }
 
 .page-toolbar,
@@ -233,6 +235,7 @@ onBeforeUnmount(() => {
 }
 
 .page-toolbar {
+  flex: 0 0 48px;
   justify-content: space-between;
   height: 48px;
 }
@@ -251,7 +254,13 @@ h2 {
 }
 
 .page-alert {
+  flex: none;
   margin: 0;
+}
+
+.content-row {
+  flex: 1;
+  overflow: hidden;
 }
 
 .content-row,
@@ -263,21 +272,39 @@ h2 {
   min-height: 0;
 }
 
-.map-card :deep(.el-card__body),
-.timeline-card :deep(.el-card__body) {
-  height: 100%;
+.map-column,
+.side-column {
+  display: flex;
+}
+
+.map-card,
+.timeline-card {
+  width: 100%;
+  flex: 1;
 }
 
 .map-card :deep(.el-card__body) {
+  height: 100%;
   padding: var(--space-2);
 }
 
 .timeline-card {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
+.timeline-card :deep(.el-card__header) {
+  flex: none;
+}
+
 .timeline-card :deep(.el-card__body) {
-  overflow: auto;
+  height: auto;
+  min-height: 0;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 .timeline-header {
@@ -291,7 +318,55 @@ h2 {
 }
 
 .point-row span,
-.point-row small {
+.point-row .meta {
   color: var(--color-text-secondary);
+}
+
+@media (max-width: 1199px) {
+  .trajectory-page {
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+  }
+
+  .content-row {
+    height: auto;
+    flex: none;
+    overflow: visible;
+    row-gap: var(--space-3);
+  }
+
+  .map-column {
+    height: clamp(420px, 62vh, 620px);
+  }
+
+  .side-column {
+    height: min(560px, 68vh);
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 760px) {
+  .page-toolbar {
+    height: auto;
+    min-height: 48px;
+    flex-basis: auto;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .filters {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .filters .el-select {
+    width: 100%;
+  }
+
+  .map-column {
+    height: 420px;
+  }
 }
 </style>

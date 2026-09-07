@@ -4,6 +4,37 @@
 
 ---
 
+## 2026-07-15：Stage 6 — Agentic GIS 重构（产品收敛为 Agent + 地图）
+
+### 修改概述
+
+删除与 Agent/地图无关的页面与模块：Dashboard、模型实验（ModelAnalysis /
+RecommendationView）、推荐/指标 API 封装、图表组件、相关 composables 与类型；
+路由收敛为工作台 + 3 个地图探索页；移除 echarts 依赖。
+
+### 修改文件清单
+
+| 文件 | 操作 | 说明 |
+|------|------|------|
+| `src/views/dashboard/` | 删除 | Legacy Dashboard 页面组 |
+| `src/views/ModelAnalysis.vue` | 删除 | 模型实验分析页 |
+| `src/views/RecommendationView.vue` | 删除 | 推荐实验页 |
+| `src/views/agent/AgentView.vue` | 删除 | 死代码（无路由引用，/agent 重定向到工作台） |
+| `src/components/charts/` | 删除 | ECharts 图表组件（echarts 依赖一并移除） |
+| `src/components/cards/MetricCard.vue` | 删除 | Dashboard 指标卡 |
+| `src/components/recommendation/` | 删除 | 推荐卡片组件组 |
+| `src/composables/useDashboardMetrics.ts` | 删除 | Dashboard 指标流 |
+| `src/composables/useRecommendationExplanation.ts` | 删除 | 推荐解释（随推荐页移除） |
+| `src/utils/modelMetrics.ts` / `src/types/model.ts` | 删除 | 模型指标工具与类型 |
+| `src/api/metrics.ts` / `src/api/recommend.ts` | 删除 | 对应 API 封装 |
+| `src/styles/dashboard-hero.css` | 删除 | Dashboard 样式 |
+| `src/router/index.ts` | 修改 | 移除 dashboard / model-lab 路由，保留工作台 + 3 个地图页 |
+| `src/components/common/AppShell.vue` | 修改 | 导航移除「模型实验」，新增「空间分析」入口 |
+| `src/types/index.ts` | 修剪 | 移除推荐/模型指标相关类型 |
+| `package.json` | 修改 | 移除 echarts 依赖 |
+
+---
+
 ## 2026-07-11：POI 后端数据库迁移 — 前端适配说明
 
 ### 修改概述
