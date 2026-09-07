@@ -26,7 +26,20 @@ LLM_PROVIDER=mock          # mock | openai_compat
 LLM_BASE_URL=
 LLM_API_KEY=
 LLM_MODEL=
+AGENT_CONTEXT_BACKEND=postgres_redis
+AGENT_CONTEXT_MAX_TOKENS=6000
+REDIS_URL=redis://localhost:6379/0
+LANGGRAPH_STRICT_MSGPACK=true
 ```
+
+Agent 使用三层上下文：LangGraph `PostgresSaver` 保存 thread 检查点，结构化
+`TaskContext` 保存当前分析参数，PostgreSQL Store 保存用户明确表达的稳定偏好。
+Redis 只缓存热点偏好并为同一 thread 提供分布式锁。完整 Tool 结果写入
+`agent_tool_artifacts`，模型只接收脱敏摘要和 `artifact_id`。
+
+首次部署先执行 `migrations/20260907_agent_tool_artifacts.sql`。LangGraph 自身的
+checkpoint/store 表由运行时首次初始化时调用 `setup()` 创建。本地无 PostgreSQL
+或 Redis 时可设置 `AGENT_CONTEXT_BACKEND=memory`，并使用 mock Tool 数据测试。
 
 ## 启动
 

@@ -6,6 +6,7 @@ from unittest.mock import Mock
 from sqlalchemy.orm import Session
 
 from app.agent.graph.runner import AgentLoopEvent, AgentRunner
+from app.agent.memory.artifacts import InMemoryArtifactRepository
 from app.agent.registry import AgentTool, ToolRegistry
 from app.agent.router_llm import LLMIntentRouter
 from app.agent.service import AgentService
@@ -75,6 +76,7 @@ def _runtime() -> tuple[AgentRunner, _ArtifactTool, _TwoTurnClient, ToolRegistry
         registry=registry,
         router=router,
         fallback_reply=lambda _name, _result: "fallback",
+        artifact_repository_factory=lambda _db: InMemoryArtifactRepository(),
     )
     return runner, tool, client, registry
 
@@ -92,7 +94,10 @@ def test_runner_returns_tool_result_to_llm_before_final_summary() -> None:
     assert second_turn[-2].tool_calls[0].id == "call-site-selection"
     assert second_turn[-1].role == "tool"
     assert second_turn[-1].tool_call_id == "call-site-selection"
-    assert json.loads(second_turn[-1].content)["analysis_type"] == "site_selection"
+    tool_summary = json.loads(second_turn[-1].content)
+    assert tool_summary["type"] == "site_selection_summary"
+    assert tool_summary["candidate_areas"] == ["shinjuku", "shibuya"]
+    assert "metrics" not in tool_summary
 
 
 def test_runner_iter_run_emits_tool_call_then_tool_result() -> None:
@@ -153,6 +158,7 @@ def test_runner_stops_repeated_identical_tool_call() -> None:
         router=LLMIntentRouter(registry, client=_RepeatingClient()),
         fallback_reply=lambda name, result: f"fallback:{name}",
         max_steps=3,
+        artifact_repository_factory=lambda _db: InMemoryArtifactRepository(),
     )
 
     result = runner.run(Mock(spec=Session), "分析新宿选址")

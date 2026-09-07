@@ -16,6 +16,14 @@ class ChatRequest(BaseModel):
 
     message: str = Field(min_length=1, max_length=500, description="用户输入的自然语言消息")
     session_id: str = Field(default="", max_length=64, description="会话 ID（多轮记忆用；为空则不启用记忆）")
+    user_id: str = Field(default="", max_length=64, description="用户 ID（用于隔离跨会话长期偏好）")
+
+
+class ResumeRequest(BaseModel):
+    """恢复失败或中断 thread 的请求。"""
+
+    session_id: str = Field(min_length=1, max_length=64)
+    user_id: str = Field(default="", max_length=64)
 
 
 class ToolCallInfo(BaseModel):
@@ -23,6 +31,7 @@ class ToolCallInfo(BaseModel):
 
     tool: str
     args: dict[str, Any] = Field(default_factory=dict)
+    artifact_id: str = ""
 
 
 class MapLayer(BaseModel):
@@ -46,3 +55,10 @@ class ChatResponse(BaseModel):
     tool_calls: list[ToolCallInfo] = Field(default_factory=list)
     map_layers: list[MapLayer] = Field(default_factory=list)
     artifacts: list[AgentArtifact] = Field(default_factory=list)
+
+
+class ArtifactResponse(BaseModel):
+    """按会话权限读取的完整工具结果。"""
+
+    artifact_id: str
+    data: dict[str, Any]

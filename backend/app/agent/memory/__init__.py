@@ -1,11 +1,25 @@
-"""对话记忆抽象层（Stage 4 Step 4）。
+"""Agent 三层上下文：短期检查点、结构化任务状态和长期偏好。"""
 
-ConversationMemory 定义 get / append / clear 接口；
-当前提供内存实现（InMemoryConversationMemory），未来可替换 Redis 实现，
-只要保持接口不变即可。
-"""
+from app.agent.memory.context import ContextBuilder, ContextPolicy, LongTermMemory
+from app.agent.memory.models import (
+    ConversationSummary,
+    TaskContext,
+    update_conversation_summary,
+    update_task_context,
+)
+from app.agent.memory.runtime import (
+    AgentContextRuntime,
+    get_agent_context_runtime,
+)
 
-from app.agent.memory.base import ConversationMemory
-from app.agent.memory.memory import InMemoryConversationMemory
-
-__all__ = ["ConversationMemory", "InMemoryConversationMemory"]
+__all__ = [
+    "AgentContextRuntime",
+    "ContextBuilder",
+    "ContextPolicy",
+    "ConversationSummary",
+    "LongTermMemory",
+    "TaskContext",
+    "get_agent_context_runtime",
+    "update_conversation_summary",
+    "update_task_context",
+]

@@ -118,6 +118,7 @@ class LLMIntentRouter:
                     id=call.id,
                     name=intent.tool,
                     arguments=intent.args,
+                    context=intent.context,
                 )
             ],
         )
@@ -149,6 +150,7 @@ class LLMIntentRouter:
     def _resolve_location(self, tool_name: str, arguments: dict) -> Intent:
         """location → bbox：GeoResolver 解析；未知地点或缺失回退默认东京中心。"""
         args = dict(arguments)
+        location = None
         if tool_name in _LOCATION_TOOL_NAMES:
             location = args.pop("location", None)
             if location:
@@ -156,4 +158,8 @@ class LLMIntentRouter:
             elif tool_name == "spatial_density":
                 # 密度分析必须有区域：LLM 未给位置时使用默认东京中心
                 args["bbox"] = dict(DEFAULT_BBOX)
-        return Intent(tool=tool_name, args=args)
+        return Intent(
+            tool=tool_name,
+            args=args,
+            context={"location": location} if location else {},
+        )
