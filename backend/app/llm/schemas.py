@@ -15,6 +15,10 @@ class LLMToolCall(BaseModel):
     id: str | None = None
     name: str
     arguments: dict[str, Any] = Field(default_factory=dict)
+    context: dict[str, Any] = Field(
+        default_factory=dict,
+        description="仅供 Agent 内部维护任务上下文，不发送给 Tool 或模型服务。",
+    )
 
 
 class LLMMessage(BaseModel):

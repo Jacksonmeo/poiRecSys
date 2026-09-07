@@ -7,7 +7,7 @@ pandas>=2.2.0,<3.0.0
 # SQLAlchemy 2.x ORM，用于 PostgreSQL 数据库查询。
 sqlalchemy>=2.0.0,<3.0.0
 # psycopg 3 驱动，连接 PostgreSQL/PostGIS。
-psycopg[binary]>=3.1.0,<4.0.0
+psycopg[binary,pool]>=3.2.0,<4.0.0
 # GeoAlchemy2 空间扩展，支持 PostGIS geometry 类型。
 geoalchemy2>=0.14.0,<1.0.0
 # pydantic-settings 管理环境变量与 .env 配置。
@@ -15,4 +15,7 @@ pydantic-settings>=2.0.0,<3.0.0
 # openai SDK：OpenAI 兼容 LLM API 客户端（Stage 4 LLM Function Calling）。
 openai>=1.30.0,<3.0.0
 # langgraph：Agent 编排图（Stage 6：StateGraph 替换自研 AgentLoop）。
-langgraph>=0.4.0,<1.0.0
+langgraph>=1.2.0,<2.0.0
+langgraph-checkpoint-postgres>=3.0.0,<4.0.0
+# Redis 只承担热点偏好缓存和同会话分布式锁，PostgreSQL 仍是真相源。
+redis>=5.2.0,<8.0.0

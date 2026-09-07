@@ -10,7 +10,8 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.agent.graph import AgentLoopResult, AgentRunner
-from app.agent.memory import InMemoryConversationMemory
+from app.agent.memory import AgentContextRuntime, ContextPolicy
+from app.agent.memory.runtime import ThreadBusyError
 from app.agent.prompts.prompt import REPLY_TEMPLATES
 from app.agent.registry import AgentTool, ToolRegistry
 from app.agent.router_llm import LLMIntentRouter
@@ -29,10 +30,6 @@ def build_default_registry(extra_tools: Iterable[AgentTool] = ()) -> ToolRegistr
     for tool in (*tools, *extra_tools):
         registry.register(tool)
     return registry
-
-
-# 模块级单例：对话记忆（内存实现，未来可替换 Redis）
-conversation_memory = InMemoryConversationMemory()
 
 
 def _poi_layer_data(result: dict) -> list[dict]:
@@ -86,13 +83,19 @@ def build_reply(tool_name: str, result: dict) -> str:
 
     if tool_name == "query_poi":
         pois = _poi_layer_data(result)
+        count = result.get("count", len(pois))
+        display_names = result.get("display_names")
+        names = "、".join(display_names) if display_names else _names(pois)
         category = result.get("category") or ""
         scope = f"（类别：{category}）" if category else ""
-        return template.format(count=len(pois), scope=scope, names=_names(pois))
+        return template.format(count=count, scope=scope, names=names)
 
     if tool_name == "spatial_density":
         cells = result.get("cells", [])
-        return template.format(count=result.get("count", 0), cells=len(cells))
+        return template.format(
+            count=result.get("count", 0),
+            cells=result.get("grid_count", len(cells)),
+        )
 
     if tool_name == "recommend":
         candidates = result.get("candidates", [])
@@ -108,21 +111,30 @@ def build_reply(tool_name: str, result: dict) -> str:
 
     if tool_name == "track":
         points = result.get("points", [])
+        display_names = result.get("display_names")
+        names = "、".join(display_names) if display_names else _names(points)
         return template.format(
             session_id=result.get("session_id", ""),
-            count=len(points),
-            names=_names(points),
+            count=result.get("point_count", len(points)),
+            names=names,
         )
 
     if tool_name == "analyze_site_selection":
         areas = result.get("candidate_areas", [])
-        names = "、".join(
-            area.get("display_name") or area.get("area_id", "") for area in areas
-        )
+        if result.get("context_summary"):
+            names = "、".join(str(area) for area in areas)
+            metric_count = result.get("metric_count", 0)
+            flow_count = result.get("flow_count", 0)
+        else:
+            names = "、".join(
+                area.get("display_name") or area.get("area_id", "") for area in areas
+            )
+            metric_count = len(result.get("metrics", []))
+            flow_count = len(result.get("flows", []))
         return (
             f"已完成 {len(areas)} 个候选区域的选址事实分析"
-            f"（{names}），得到 {len(result.get('metrics', []))} 项指标和 "
-            f"{len(result.get('flows', []))} 条区域流向。"
+            f"（{names}），得到 {metric_count} 项指标和 "
+            f"{flow_count} 条区域流向。"
         )
 
     return REPLY_TEMPLATES["fallback"]
@@ -141,21 +153,31 @@ class AgentService:
     def __init__(
         self,
         registry: ToolRegistry,
-        memory: InMemoryConversationMemory | None = None,
+        context_runtime: AgentContextRuntime | None = None,
         db: Session | None = None,
         router: LLMIntentRouter | None = None,
         max_steps: int = 3,
+        context_policy: ContextPolicy | None = None,
+        artifact_repository_factory=None,
     ) -> None:
         """构造请求级编排服务：组合注册表、记忆、路由与 LangGraph 执行器。"""
+        runtime = context_runtime or AgentContextRuntime.in_memory()
         self._registry = registry
         self._db = db
         self._router = router or LLMIntentRouter(registry)
-        self._memory = memory or conversation_memory
+        self._thread_locks = runtime.thread_locks
         self._runner = AgentRunner(
             registry=registry,
             router=self._router,
             fallback_reply=build_reply,
             max_steps=max_steps,
+            checkpointer=runtime.checkpointer,
+            store=runtime.store,
+            context_cache=runtime.cache,
+            context_policy=context_policy,
+            artifact_repository_factory=(
+                artifact_repository_factory or runtime.artifact_repository_factory
+            ),
         )
 
     def chat(
@@ -163,24 +185,30 @@ class AgentService:
         db: Session | None = None,
         message: str = "",
         session_id: str = "",
+        user_id: str = "",
     ) -> ChatResponse:
-        """执行一次非流式对话：推理 → 组装响应 → 写入会话记忆。"""
+        """执行一次非流式对话；同一持久化 thread 串行推进。"""
         request_db = self._request_db(db)
-        history = self._memory.get(session_id) if session_id else None
         try:
-            result = self._runner.run(db=request_db, message=message, history=history)
+            with self._thread_locks.hold(self._thread_key(session_id, user_id)):
+                result = self._runner.run(
+                    db=request_db,
+                    message=message,
+                    session_id=session_id,
+                    user_id=user_id,
+                )
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
-        response = self._build_response(result)
-        if session_id:
-            self._memory.append(session_id, message, response.reply)
-        return response
+        except ThreadBusyError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        return self._build_response(result)
 
     def chat_stream(
         self,
         db: Session | None = None,
         message: str = "",
         session_id: str = "",
+        user_id: str = "",
     ):
         """SSE 编排：逐步转发 Loop 事件，再输出文本增量与终态。
 
@@ -188,39 +216,54 @@ class AgentService:
         工具校验失败（ValueError）由路由层捕获并转为 error 事件。
         """
         request_db = self._request_db(db)
-        history = self._memory.get(session_id) if session_id else None
-        iterator = self._runner.iter_run(
-            db=request_db,
-            message=message,
-            history=history,
-        )
-        while True:
-            try:
-                event = next(iterator)
-            except StopIteration as stop:
-                loop_result = stop.value
-                break
-            if event.kind == "tool_call":
-                yield ChatStreamEvent(
-                    kind="tool_call",
-                    payload={"tool": event.name, "args": event.args},
-                )
-            else:
-                yield ChatStreamEvent(
-                    kind="tool_result",
-                    payload=tool_result_summary(event.name, event.result or {}),
-                )
+        with self._thread_locks.hold(self._thread_key(session_id, user_id)):
+            iterator = self._runner.iter_run(
+                db=request_db,
+                message=message,
+                session_id=session_id,
+                user_id=user_id,
+            )
+            while True:
+                try:
+                    event = next(iterator)
+                except StopIteration as stop:
+                    loop_result = stop.value
+                    break
+                if event.kind == "tool_call":
+                    yield ChatStreamEvent(
+                        kind="tool_call",
+                        payload={"tool": event.name, "args": event.args},
+                    )
+                else:
+                    yield ChatStreamEvent(
+                        kind="tool_result",
+                        payload=tool_result_summary(event.name, event.result or {}),
+                    )
 
-        response = self._build_response(loop_result)
-        for chunk in chunk_text(response.reply):
-            yield ChatStreamEvent(kind="text", payload={"content": chunk})
-        yield ChatStreamEvent(
-            kind="done",
-            payload=response.model_dump(mode="json"),
-        )
+            response = self._build_response(loop_result)
+            for chunk in chunk_text(response.reply):
+                yield ChatStreamEvent(kind="text", payload={"content": chunk})
+            yield ChatStreamEvent(
+                kind="done",
+                payload=response.model_dump(mode="json"),
+            )
 
-        if session_id:
-            self._memory.append(session_id, message, response.reply)
+    def resume(
+        self,
+        db: Session | None = None,
+        session_id: str = "",
+        user_id: str = "",
+    ) -> ChatResponse:
+        """从最近失败或中断的 checkpoint 继续执行。"""
+        request_db = self._request_db(db)
+        try:
+            with self._thread_locks.hold(self._thread_key(session_id, user_id)):
+                result = self._runner.resume(request_db, session_id, user_id)
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+        except ThreadBusyError as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        return self._build_response(result)
 
     def _request_db(self, db: Session | None) -> Session:
         """解析请求级数据库会话；两者皆缺时抛 RuntimeError。"""
@@ -230,6 +273,15 @@ class AgentService:
         return request_db
 
     @staticmethod
+    def _thread_key(session_id: str, user_id: str) -> str:
+        """与 Runner 使用相同的脱敏 thread key；无会话时无需加锁。"""
+        if not session_id:
+            return ""
+        from app.agent.memory.context import scoped_identifier
+
+        return scoped_identifier(user_id or "anonymous", session_id)
+
+    @staticmethod
     def _build_response(result: AgentLoopResult) -> ChatResponse:
         """把循环终态转换为 ChatResponse（工具记录 + 地图图层 + 产物）。"""
         tool_calls: list[ToolCallInfo] = []
@@ -237,7 +289,11 @@ class AgentService:
         artifacts: list[AgentArtifact] = []
         for execution in result.executions:
             tool_calls.append(
-                ToolCallInfo(tool=execution.name, args=execution.args)
+                ToolCallInfo(
+                    tool=execution.name,
+                    args=execution.args,
+                    artifact_id=execution.artifact_id,
+                )
             )
             layers.extend(build_map_layers(execution.name, execution.result))
             artifacts.extend(build_artifacts(execution.name, execution.result))

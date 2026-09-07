@@ -65,6 +65,7 @@ def _ensure_test_database() -> str:
 
 # ── 关键：在导入 app 之前把 DATABASE_URL 指向测试库 ───────────────────
 os.environ["DATABASE_URL"] = _ensure_test_database()
+os.environ.setdefault("AGENT_CONTEXT_BACKEND", "memory")
 
 from fastapi.testclient import TestClient  # noqa: E402
 

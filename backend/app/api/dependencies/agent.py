@@ -6,6 +6,8 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from app.agent.service import AgentService, build_default_registry
+from app.agent.memory import AgentContextRuntime, ContextPolicy, get_agent_context_runtime
+from app.core.config import settings
 from app.agent.tools.site_selection_agent_tool import SiteSelectionAgentTool
 from app.api.dependencies.site_selection import (
     get_site_selection_analysis_service,
@@ -20,7 +22,11 @@ def get_agent_service(
         SiteSelectionAnalysisService,
         Depends(get_site_selection_analysis_service),
     ],
-    db: Annotated[Session, Depends(get_db)] = None,
+    db: Annotated[Session | None, Depends(get_db)] = None,
+    context_runtime: Annotated[
+        AgentContextRuntime | None,
+        Depends(get_agent_context_runtime),
+    ] = None,
 ) -> AgentService:
     """为当前请求组合完整 Registry，不缓存数据库会话或 AgentService。"""
     site_selection_tool = SiteSelectionTool(analysis_service=analysis_service)
@@ -29,4 +35,9 @@ def get_agent_service(
     if db is None:
         # 兼容直接调用依赖工厂的单元测试；FastAPI 请求中始终由 get_db 注入。
         db = analysis_service.site_selection_service.repository.db
-    return AgentService(registry=registry, db=db)
+    return AgentService(
+        registry=registry,
+        db=db,
+        context_runtime=context_runtime or AgentContextRuntime.in_memory(),
+        context_policy=ContextPolicy(settings.agent_context_max_tokens),
+    )

@@ -5,7 +5,7 @@ LLM 不可用/输出非法时的降级路径；SYSTEM_PROMPT 作为 LLM 系统�
 各工具的 parameters（JSON Schema，见 tools/*.py）直接作为函数声明。
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 # 默认分析区域：东京中心（消息中无位置信息时的兜底 bbox）
 DEFAULT_BBOX = {"min_lon": 139.69, "min_lat": 35.64, "max_lon": 139.81, "max_lat": 35.72}
@@ -99,6 +99,7 @@ class Intent:
     tool: str
     args: dict
     text: str = ""
+    context: dict = field(default_factory=dict)
 
 
 # 密度分析意图的默认参数（无位置信息时用东京中心）
@@ -129,7 +130,7 @@ def _route_intent(message: str) -> Intent:
 
     for keyword, category in CATEGORY_KEYWORDS.items():
         if keyword in msg:
-            args = {"category": category}
+            args: dict = {"category": category}
             if "附近" in msg:
                 args["bbox"] = DEFAULT_BBOX
             return Intent(tool="query_poi", args=args)

@@ -2,12 +2,15 @@
 FastAPI 应用入口，负责创建应用实例、注册中间件、全局异常处理器和路由。
 """
 
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.agent.memory.runtime import close_agent_context_runtime
 from app.api import (
     agent,
     analysis,
@@ -18,11 +21,20 @@ from app.api import (
     users,
 )
 
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """应用退出时释放 LangGraph PostgreSQL 连接池和 Redis 客户端。"""
+    yield
+    close_agent_context_runtime()
+
+
 # 创建 FastAPI 应用实例，配置 OpenAPI 文档元信息
 app = FastAPI(
     title="POI Recommendation Visual Platform API",
     version="0.5.0",
     description="POI recommendation result visualization, trajectory analysis, PostGIS spatial analysis and Agent tool-calling API.",
+    lifespan=lifespan,
 )
 
 # 配置 CORS 中间件，允许前端开发服务器跨域访问
